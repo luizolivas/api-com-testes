@@ -1,5 +1,6 @@
 ﻿using introApiWeb.Contexts;
 using introApiWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
 {
@@ -12,19 +13,19 @@ namespace introApiWeb.Services
             _context = context;
         }
 
-        public List<Pessoa> getAllPessoa()
+        public async Task<List<Pessoa>> getAllPessoa()
         {
-            return _context.Pessoas.ToList();
+            return await _context.Pessoas.ToListAsync();
         }
 
-        public void AddPessoa(Pessoa pessoa)
+        public async Task AddPessoa(Pessoa pessoa)
         {
             _context.Pessoas.Add(pessoa);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
 
-        public void DeletePessoa(long pessoaId)
+        public async Task DeletePessoa(long pessoaId)
         {
             var p = _context.Pessoas.Find(pessoaId);
 
@@ -34,32 +35,36 @@ namespace introApiWeb.Services
             }
 
             _context.Pessoas.Remove(p);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdatePessoa(Pessoa p)
+        public async Task UpdatePessoa(Pessoa p)
         {
             if(p is null)
             {
                 return;
             }
-            Pessoa pessoa = _context.Pessoas.Find(p.Id);
+            Pessoa? pessoa = await _context.Pessoas.FindAsync(p.Id);
 
-            long idPessoa = pessoa.Id;
+            if(pessoa == null)
+            {
+                return;
+            }
+
+            pessoa.Nome = p.Nome;
+            pessoa.Tel = p.Tel;
+
             try
             {
-                _context.Pessoas.Update(p);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
+                _context.Pessoas.Update(pessoa);
+                await _context.SaveChangesAsync();
+            }catch (Exception ex)
             {
-                throw ex;
+
             }
             
 
         }
 
-
-        
     }
 }

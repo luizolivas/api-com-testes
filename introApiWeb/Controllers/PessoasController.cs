@@ -23,17 +23,18 @@ namespace introApiWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Pessoa>> GetAllPessoas()
+        public async Task<ActionResult<List<Pessoa>>> GetAllPessoas()
         {
-            return _pessoaService.getAllPessoa();
+            List<Pessoa> pessoas = await _pessoaService.getAllPessoa();
+            return Ok(pessoas);
         }
 
         [HttpPost]
-        public ActionResult AddPessoa(Pessoa pessoa)
+        public async Task<ActionResult> AddPessoa(Pessoa pessoa)
         {
             try
             {
-                _pessoaService.AddPessoa(pessoa);
+                await _pessoaService.AddPessoa(pessoa);
                 return Ok();
 
             }catch (Exception ex)
@@ -46,11 +47,11 @@ namespace introApiWeb.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeletePessoa(long id)
+        public async Task<ActionResult> DeletePessoa(long id)
         {
             try
             {
-                _pessoaService.DeletePessoa(id);
+                await _pessoaService.DeletePessoa(id);
                 return Ok();
 
             }catch (Exception ex)
@@ -61,11 +62,11 @@ namespace introApiWeb.Controllers
 
 
         [HttpPut("{id}")]
-        public ActionResult UpdatePessoa(Pessoa newPessoa)
+        public async Task<ActionResult> UpdatePessoa(Pessoa newPessoa)
         {
             try
             {
-                _pessoaService.UpdatePessoa(newPessoa);
+                await _pessoaService.UpdatePessoa(newPessoa);
                 return Ok();
             }catch (Exception ex)
             {
