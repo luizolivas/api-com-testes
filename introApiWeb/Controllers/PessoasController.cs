@@ -47,7 +47,7 @@ namespace introApiWeb.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePessoa(long id)
+        public async Task<ActionResult> DeletePessoa(int id)
         {
             try
             {

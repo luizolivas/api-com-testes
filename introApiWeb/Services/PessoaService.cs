@@ -25,7 +25,7 @@ namespace introApiWeb.Services
 
         }
 
-        public async Task DeletePessoa(long pessoaId)
+        public async Task DeletePessoa(int pessoaId)
         {
             var p = _context.Pessoas.Find(pessoaId);
 

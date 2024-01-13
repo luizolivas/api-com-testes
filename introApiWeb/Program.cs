@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using introApiWeb.Models;
 using introApiWeb.Contexts;
 using introApiWeb.Services;
+using System.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<AppDBContext>(opt =>
-    opt.UseInMemoryDatabase("ListaPessoa"));
+//builder.Services.AddDbContext<AppDBContext>(opt =>
+//    opt.UseInMemoryDatabase("ListaPessoa"));
+builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("Data Source=DESKTOP-1NDP0IE; Initial Catalog=teste_api;Integrated Security=False;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;Trusted_Connection=True"));
+
 
 builder.Services.AddScoped<PessoaService>();
 builder.Services.AddScoped<ProdutoService>();

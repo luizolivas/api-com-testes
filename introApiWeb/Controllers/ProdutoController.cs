@@ -1,50 +1,80 @@
-﻿using introApiWeb.Models;
-using introApiWeb.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using introApiWeb.Contexts;
+using introApiWeb.Models;
+using introApiWeb.Services;
 
 namespace introApiWeb.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class ProdutoController : Controller
+    [ApiController]
+    public class ProdutoController : ControllerBase
     {
-        private readonly ProdutoService _produtoService;
+        private readonly ProdutoService _ProdutoService;
 
-        public ProdutoController( ProdutoService produtoService) {
-
-            _produtoService = produtoService;
+        public ProdutoController(ProdutoService Produtoervice)
+        {
+            _ProdutoService = Produtoervice;
         }
 
-
         [HttpGet]
-        public ActionResult<List<Produto>> GetAllProdutos()
+        public async Task<ActionResult<List<Produto>>> GetAllProduto()
         {
-            return _produtoService.GetAllProdutos();
-            
+            List<Produto> Produto = await _ProdutoService.getAllProduto();
+            return Ok(Produto);
         }
 
         [HttpPost]
-        public ActionResult AddProduto(Produto produto)
+        public async Task<ActionResult> AddProduto(Produto Produto)
         {
             try
             {
-                _produtoService.AddProduto(produto);
-                return Ok(); 
+                await _ProdutoService.AddProduto(Produto);
+                return Ok();
+
             }
             catch (Exception ex)
             {
-                
-                return BadRequest($"Falha ao adicionar produto: {ex.Message}");
+                return BadRequest($"Falha ao adicionar Produto: {ex.Message}");
+
+            }
+
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteProduto(int id)
+        {
+            try
+            {
+                await _ProdutoService.DeleteProduto(id);
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Falha ao remover Produto: {ex.Message}");
             }
         }
 
 
-
-
-
-        public IActionResult Index()
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateProduto(Produto newProduto)
         {
-            return View();
+            try
+            {
+                await _ProdutoService.UpdateProduto(newProduto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Falha ao atualizar Produto: {ex.Message}");
+            }
         }
     }
 }

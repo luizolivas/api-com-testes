@@ -1,11 +1,11 @@
 ﻿using introApiWeb.Contexts;
 using introApiWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
 {
     public class ProdutoService
     {
-
         private readonly AppDBContext _context;
 
         public ProdutoService(AppDBContext context)
@@ -13,55 +13,58 @@ namespace introApiWeb.Services
             _context = context;
         }
 
-
-        public List<Produto> GetAllProdutos()
+        public async Task<List<Produto>> getAllProduto()
         {
-            return _context.Produtos.ToList();
+            return await _context.Produtos.ToListAsync();
         }
 
-        public void AddProduto(Produto produto)
+        public async Task AddProduto(Produto Produto)
         {
-            _context.Produtos.Add(produto);
-            _context.SaveChanges();
+            _context.Produtos.Add(Produto);
+            await _context.SaveChangesAsync();
 
         }
 
-        public void DeleteProduto(int id)
+        public async Task DeleteProduto(int ProdutoId)
         {
-            var produto = _context.Produtos.Find(id);
+            var p = _context.Produtos.Find(ProdutoId);
 
-            if (produto is null)
+            if (p is null)
             {
                 return;
             }
-            _context.Produtos.Remove(produto); 
-            _context.SaveChanges();
+
+            _context.Produtos.Remove(p);
+            await _context.SaveChangesAsync();
         }
 
-        //public static Pizza? Get(int id) => Pizzas.FirstOrDefault(p => p.Id == id);
+        public async Task UpdateProduto(Produto p)
+        {
+            if (p is null)
+            {
+                return;
+            }
+            Produto? Produto = await _context.Produtos.FindAsync(p.Id);
 
-        //public static void Add(Pizza pizza)
-        //{
-        //    pizza.Id = nextId++;
-        //    Pizzas.Add(pizza);
-        //}
+            if (Produto == null)
+            {
+                return;
+            }
 
-        //public static void Delete(int id)
-        //{
-        //    var pizza = Get(id);
-        //    if (pizza is null)
-        //        return;
+            Produto.Nome = p.Nome;
 
-        //    Pizzas.Remove(pizza);
-        //}
+            try
+            {
+                _context.Produtos.Update(Produto);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
 
-        //public static void Update(Pizza pizza)
-        //{
-        //    var index = Pizzas.FindIndex(p => p.Id == pizza.Id);
-        //    if (index == -1)
-        //        return;
+            }
 
-        //    Pizzas[index] = pizza;
-        //}
+
+        }
+
     }
 }
