@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using introApiWeb.Contexts;
 
@@ -11,9 +12,11 @@ using introApiWeb.Contexts;
 namespace introApiWeb.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240115215823_alterRelacionamentoTwo")]
+    partial class alterRelacionamentoTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,17 +84,12 @@ namespace introApiWeb.Migrations
             modelBuilder.Entity("introApiWeb.Models.Pedido", b =>
                 {
                     b.HasOne("introApiWeb.Models.Pessoa", "Pessoa")
-                        .WithMany("Pedidos")
+                        .WithMany()
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Pessoa");
-                });
-
-            modelBuilder.Entity("introApiWeb.Models.Pessoa", b =>
-                {
-                    b.Navigation("Pedidos");
                 });
 #pragma warning restore 612, 618
         }

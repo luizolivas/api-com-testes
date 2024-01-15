@@ -24,7 +24,7 @@ namespace introApiWeb.Contexts
 
             modelBuilder.Entity<Pedido>()
                 .HasOne(pedido => pedido.Pessoa)
-                .WithMany() 
+                .WithMany(pessoa => pessoa.Pedidos)
                 .HasForeignKey(pedido => pedido.PessoaId);
 
         }

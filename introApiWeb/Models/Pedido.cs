@@ -13,6 +13,6 @@ namespace introApiWeb.Models
 
         public int PessoaId { get; set; }
 
-        public Pessoa Pessoa { get; set; }
+        public Pessoa? Pessoa { get; set; }
     }
 }

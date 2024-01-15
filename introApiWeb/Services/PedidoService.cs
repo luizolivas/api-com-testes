@@ -20,8 +20,14 @@ namespace introApiWeb.Services
 
         public async Task AddPedido(Pedido Pedido)
         {
-            _context.Pedidos.Add(Pedido);
-            await _context.SaveChangesAsync();
+            Pessoa? p = _context.Pessoas.Find(Pedido.PessoaId);
+            if (p != null)
+            {
+                Pedido.Pessoa = p;
+                _context.Pedidos.Add(Pedido);
+                await _context.SaveChangesAsync();
+            }
+
         }
 
         public async Task DeletePedido(int PedidoId)
