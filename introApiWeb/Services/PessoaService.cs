@@ -20,8 +20,15 @@ namespace introApiWeb.Services
 
         public async Task AddPessoa(Pessoa pessoa)
         {
-            _context.Pessoas.Add(pessoa);
+            try
+            {
+                            _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
+
+            }catch (Exception ex)
+            {
+                
+            }
 
         }
 
