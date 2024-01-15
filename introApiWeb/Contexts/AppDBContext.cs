@@ -17,6 +17,8 @@ namespace introApiWeb.Contexts
 
         public DbSet<Pedido> Pedidos { get; set; }
 
+        public DbSet<ProdutoPedido> ProdutoPedidos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +28,7 @@ namespace introApiWeb.Contexts
                 .HasOne(pedido => pedido.Pessoa)
                 .WithMany(pessoa => pessoa.Pedidos)
                 .HasForeignKey(pedido => pedido.PessoaId);
+
 
         }
 
