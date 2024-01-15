@@ -22,14 +22,14 @@ namespace introApiWeb.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(p => p.Pedido)
-                .WithOne(pedido => pedido.Pessoa)
+            modelBuilder.Entity<Pedido>()
+                .HasOne(pedido => pedido.Pessoa)
+                .WithMany() 
                 .HasForeignKey(pedido => pedido.PessoaId);
-                
+
         }
 
 
-        public DbSet<introApiWeb.Models.Pedido>? Pedido { get; set; }
+        //public DbSet<introApiWeb.Models.Pedido>? Pedido { get; set; }
     }
 }

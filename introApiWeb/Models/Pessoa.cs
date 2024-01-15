@@ -13,7 +13,5 @@ namespace introApiWeb.Models
 
         public string? Tel {  get; set; }
 
-        public ICollection<Pedido> Pedido { get; set; }
-
     }
 }
