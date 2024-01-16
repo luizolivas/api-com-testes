@@ -52,6 +52,7 @@ namespace introApiWeb.Services
             }
 
             Produto.Nome = p.Nome;
+            Produto.Preco = p.Preco;
 
             try
             {
