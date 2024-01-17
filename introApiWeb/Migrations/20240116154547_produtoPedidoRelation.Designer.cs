@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using introApiWeb.Contexts;
 
@@ -11,9 +12,11 @@ using introApiWeb.Contexts;
 namespace introApiWeb.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240116154547_produtoPedidoRelation")]
+    partial class produtoPedidoRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace introApiWeb.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("Pedidos", (string)null);
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("introApiWeb.Models.Pessoa", b =>
@@ -59,7 +62,7 @@ namespace introApiWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pessoas", (string)null);
+                    b.ToTable("Pessoas");
                 });
 
             modelBuilder.Entity("introApiWeb.Models.Produto", b =>
@@ -78,7 +81,7 @@ namespace introApiWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produtos", (string)null);
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("introApiWeb.Models.ProdutoPedido", b =>
@@ -101,7 +104,7 @@ namespace introApiWeb.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("ProdutoPedidos", (string)null);
+                    b.ToTable("ProdutoPedidos");
                 });
 
             modelBuilder.Entity("introApiWeb.Models.Pedido", b =>

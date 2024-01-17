@@ -29,20 +29,16 @@ namespace introApiWeb.Contexts
                 .WithMany(pessoa => pessoa.Pedidos)
                 .HasForeignKey(pedido => pedido.PessoaId);
 
-            modelBuilder.Entity<Pedido>()
-                .HasMany(p => p.ProdutosPedidos)
-                .WithOne(pp => pp.Pedido)
-                .HasForeignKey(pp => pp.PedidoId);
 
             modelBuilder.Entity<ProdutoPedido>()
                 .HasOne(pp => pp.Produto)
                 .WithMany()
                 .HasForeignKey(pp => pp.ProdutoId);
 
-            modelBuilder.Entity<ProdutoPedido>()
-                .HasOne(pp => pp.Pedido)
-                .WithMany(p => p.ProdutosPedidos)
-                .HasForeignKey(pp => pp.PedidoId);
+            modelBuilder.Entity<Pedido>()
+                .HasMany(p => p.ProdutosPedidos)
+                .WithOne(item => item.Pedido)
+                .HasForeignKey(item => item.PedidoId);
 
 
         }

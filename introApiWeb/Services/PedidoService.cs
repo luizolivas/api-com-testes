@@ -1,5 +1,6 @@
 ﻿using introApiWeb.Contexts;
 using introApiWeb.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
@@ -26,6 +27,12 @@ namespace introApiWeb.Services
                 Pedido.Pessoa = p;
                 _context.Pedidos.Add(Pedido);
                 await _context.SaveChangesAsync();
+
+                
+            }
+            else
+            {
+                throw new Exception("Pessoa não encontrada");
             }
 
         }
