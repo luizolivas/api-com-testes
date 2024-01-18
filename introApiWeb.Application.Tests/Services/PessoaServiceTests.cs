@@ -1,4 +1,5 @@
 ﻿using introApiWeb.Contexts;
+using introApiWeb.Models;
 using introApiWeb.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -30,9 +31,19 @@ namespace introApiWeb.Application.Tests.Services
         }
 
         [Fact]
-        public void Post_CriandoPessoa()
+        public async Task Post_CriandoPessoa()
         {
-            Assert.True(true);
+            var p = new Pessoa
+            {
+                Nome = "Test Pessoa",
+                Tel = "123456789"
+            };
+            await pessoaService.AddPessoa(p);
+
+            var pessoaInDb = await dbContext.Pessoas.FirstOrDefaultAsync();
+            Assert.NotNull(pessoaInDb);
+            Assert.Equal("Test Pessoa", pessoaInDb.Nome);
+            Assert.Equal("123456789", pessoaInDb.Tel);
         }
     }
 }
