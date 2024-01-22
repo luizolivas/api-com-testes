@@ -69,6 +69,25 @@ namespace introApiWeb.Application.Tests.Services
             Assert.NotNull(pessoaAtualizada);
             Assert.Equal("Luizzzzzzzzzzzzzzzzzzzzz", pessoaAtualizada.Nome);
             Assert.Equal("(43) 2020-2121", pessoaAtualizada.Tel);
+
+            dbContext.Database.EnsureDeleted();
+        }
+
+        [Fact]
+        public async Task DeletePessoa_DeveDeletarPessoaNoBanco()
+        {
+            var p = new Pessoa
+            {
+                Nome = "Test Pessoa",
+                Tel = "(43) 0000-0000"
+            };
+
+            await pessoaService.AddPessoa(p);
+
+            await pessoaService.DeletePessoa(p.Id);
+
+            var pessoaDeleteada = await dbContext.Pessoas.FirstOrDefaultAsync();
+            Assert.Null(pessoaDeleteada);
         }
 
     }
