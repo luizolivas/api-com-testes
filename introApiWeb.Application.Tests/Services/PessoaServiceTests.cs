@@ -18,14 +18,14 @@ namespace introApiWeb.Application.Tests.Services
 
         public PessoaServiceTests()
         {
-            // Configuração do DbContext em memória
+            
             var options = new DbContextOptionsBuilder<AppDBContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
             dbContext = new AppDBContext(options);
 
-            // Configuração do serviço
+            
             pessoaService = new PessoaService(dbContext);
 
         }
@@ -44,6 +44,8 @@ namespace introApiWeb.Application.Tests.Services
             Assert.NotNull(pessoaInDb);
             Assert.Equal("Test Pessoa", pessoaInDb.Nome);
             Assert.Equal("(43) 0000-0000", pessoaInDb.Tel);
+
+            dbContext.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -57,10 +59,9 @@ namespace introApiWeb.Application.Tests.Services
 
             await pessoaService.AddPessoa(p);
 
+            // Atualizar a mesma pessoa
             p.Nome = "Luizzzzzzzzzzzzzzzzzzzzz";
             p.Tel = "(43) 2020-2121";
-
-            //Pessoa pteste = await dbContext.Pessoas.FirstOrDefaultAsync();
 
             await pessoaService.UpdatePessoa(p);
 
@@ -69,5 +70,6 @@ namespace introApiWeb.Application.Tests.Services
             Assert.Equal("Luizzzzzzzzzzzzzzzzzzzzz", pessoaAtualizada.Nome);
             Assert.Equal("(43) 2020-2121", pessoaAtualizada.Tel);
         }
+
     }
 }

@@ -60,7 +60,6 @@ namespace introApiWeb.Services
             {
                 return;
             }
-            Pessoa p1 = _context.Pessoas.Find(p.Id);
             Pessoa? pessoa = await _context.Pessoas.FindAsync(p.Id);
 
             if(pessoa == null)
