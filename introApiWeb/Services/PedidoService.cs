@@ -32,7 +32,7 @@ namespace introApiWeb.Services
             }
             else
             {
-                throw new Exception("Pessoa não encontrada");
+                throw new Exception("Pedido não encontrada");
             }
 
         }

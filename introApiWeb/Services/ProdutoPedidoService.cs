@@ -18,24 +18,25 @@ namespace introApiWeb.Services
             return await _context.ProdutoPedidos.ToListAsync();
         }
 
-        public async Task AddProdutoPedido(ProdutoPedido pessoa)
+        public async Task AddProdutoPedido(ProdutoPedido produtoPed)
         {
-            try
+            Pedido? ped = _context.Pedidos.Find(produtoPed.PedidoId);
+            if (ped != null)
             {
-                _context.ProdutoPedidos.Add(pessoa);
+                _context.ProdutoPedidos.Add(produtoPed);
                 await _context.SaveChangesAsync();
 
             }
-            catch (Exception ex)
+            else
             {
-
+                throw new Exception("Pedido não encontrado");
             }
 
         }
 
-        public async Task DeleteProdutoPedido(int pessoaId)
+        public async Task DeleteProdutoPedido(int produtoPedId)
         {
-            var p = _context.ProdutoPedidos.Find(pessoaId);
+            var p = _context.ProdutoPedidos.Find(produtoPedId);
 
             if (p is null)
             {
@@ -54,7 +55,7 @@ namespace introApiWeb.Services
             }
             ProdutoPedido? pp = await _context.ProdutoPedidos.FindAsync(p.Id);
 
-            //if (pessoa == null)
+            //if (produtoPed == null)
             //{
             //    return;
             //}
@@ -63,7 +64,7 @@ namespace introApiWeb.Services
 
             try
             {
-                //_context.ProdutoPedidos.Update(pessoa);
+                //_context.ProdutoPedidos.Update(produtoPed);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
