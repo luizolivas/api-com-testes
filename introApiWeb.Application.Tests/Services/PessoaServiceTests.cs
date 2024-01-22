@@ -31,19 +31,43 @@ namespace introApiWeb.Application.Tests.Services
         }
 
         [Fact]
-        public async Task Post_CriandoPessoa()
+        public async Task AddPessoa_DeveAdicionarPessoaAoBanco()
         {
             var p = new Pessoa
             {
                 Nome = "Test Pessoa",
-                Tel = "123456789"
+                Tel = "(43) 0000-0000"
             };
             await pessoaService.AddPessoa(p);
 
             var pessoaInDb = await dbContext.Pessoas.FirstOrDefaultAsync();
             Assert.NotNull(pessoaInDb);
             Assert.Equal("Test Pessoa", pessoaInDb.Nome);
-            Assert.Equal("123456789", pessoaInDb.Tel);
+            Assert.Equal("(43) 0000-0000", pessoaInDb.Tel);
+        }
+
+        [Fact]
+        public async Task UpdatePessoa_DeveAtualizarPessoaNoBanco()
+        {
+            var p = new Pessoa
+            {
+                Nome = "Test Pessoa",
+                Tel = "(43) 0000-0000"
+            };
+
+            await pessoaService.AddPessoa(p);
+
+            p.Nome = "Luizzzzzzzzzzzzzzzzzzzzz";
+            p.Tel = "(43) 2020-2121";
+
+            //Pessoa pteste = await dbContext.Pessoas.FirstOrDefaultAsync();
+
+            await pessoaService.UpdatePessoa(p);
+
+            var pessoaAtualizada = await dbContext.Pessoas.FirstOrDefaultAsync();
+            Assert.NotNull(pessoaAtualizada);
+            Assert.Equal("Luizzzzzzzzzzzzzzzzzzzzz", pessoaAtualizada.Nome);
+            Assert.Equal("(43) 2020-2121", pessoaAtualizada.Tel);
         }
     }
 }

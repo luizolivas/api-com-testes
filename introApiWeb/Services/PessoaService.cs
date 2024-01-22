@@ -1,4 +1,5 @@
 ﻿using introApiWeb.Contexts;
+using introApiWeb.Helpers;
 using introApiWeb.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,12 +23,20 @@ namespace introApiWeb.Services
         {
             try
             {
-                            _context.Pessoas.Add(pessoa);
-            await _context.SaveChangesAsync();
+                if (ValidaNumTel.verificaNum(pessoa.Tel))
+                {
+                    _context.Pessoas.Add(pessoa);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Formato de telefone Incorreto");
+                }
 
-            }catch (Exception ex)
+
+            }catch (Exception ex) 
             {
-                
+                throw new Exception("Dados incorretos: " + ex.Message);
             }
 
         }
@@ -51,6 +60,7 @@ namespace introApiWeb.Services
             {
                 return;
             }
+            Pessoa p1 = _context.Pessoas.Find(p.Id);
             Pessoa? pessoa = await _context.Pessoas.FindAsync(p.Id);
 
             if(pessoa == null)
