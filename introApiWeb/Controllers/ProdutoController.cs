@@ -29,28 +29,6 @@ namespace introApiWeb.Controllers
             return Ok(Produto);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> FindProdutoById(int id)
-        {
-            try
-            {
-                var produto = await _ProdutoService.FindProdutoById(id);
-
-                if (produto != null)
-                {
-                    return Ok(produto);
-                }
-                else
-                {
-                    return NotFound(); // Produto não encontrado
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Falha ao buscar produto: {ex.Message}");
-            }
-        }
-
         [HttpPost]
         public async Task<ActionResult> AddProduto(Produto Produto)
         {
