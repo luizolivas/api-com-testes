@@ -18,6 +18,21 @@ namespace introApiWeb.Services
             return await _context.Produtos.ToListAsync();
         }
 
+        public async Task<Produto> FindProdutoById(int produtoId)
+        {
+            try
+            {
+
+                Produto p = await _context.Produtos.FindAsync(produtoId);
+                return p;
+            }
+            catch
+            {
+                throw new Exception("Erro ao buscar Produto por ID.");
+            }
+
+        }
+
         public async Task AddProduto(Produto Produto)
         {
             _context.Produtos.Add(Produto);
@@ -67,5 +82,16 @@ namespace introApiWeb.Services
 
         }
 
+        public List<ProdutoPedido> GetProdutosPedidosPorPedidoId(int pedidoId)
+        {
+            var produtosPedidos = _context.Pedidos
+                .Where(p => p.Id == pedidoId)
+                .Include(p => p.ProdutosPedidos)
+                    .ThenInclude(pp => pp.Produto)
+                .SelectMany(p => p.ProdutosPedidos)
+                .ToList();
+
+            return produtosPedidos;
+        }
     }
 }
