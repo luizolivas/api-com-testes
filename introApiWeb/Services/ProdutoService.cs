@@ -82,16 +82,5 @@ namespace introApiWeb.Services
 
         }
 
-        public List<ProdutoPedido> GetProdutosPedidosPorPedidoId(int pedidoId)
-        {
-            var produtosPedidos = _context.Pedidos
-                .Where(p => p.Id == pedidoId)
-                .Include(p => p.ProdutosPedidos)
-                    .ThenInclude(pp => pp.Produto)
-                .SelectMany(p => p.ProdutosPedidos)
-                .ToList();
-
-            return produtosPedidos;
-        }
     }
 }

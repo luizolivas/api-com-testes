@@ -17,10 +17,15 @@ namespace introApiWeb.Controllers
     {
         private readonly PedidoService _PedidoService;
 
-        public PedidoController(PedidoService Pedidoervice)
+        private readonly ProdutoPedidoService _ProdutoPedidoService;
+
+        public PedidoController(PedidoService Pedidoervice, ProdutoPedidoService produtoPedidoService)
         {
             _PedidoService = Pedidoervice;
+            _ProdutoPedidoService = produtoPedidoService;
         }
+
+
 
         [HttpGet]
         public async Task<ActionResult<List<Pedido>>> GetAllPedido()
@@ -28,6 +33,15 @@ namespace introApiWeb.Controllers
             List<Pedido> Pedido = await _PedidoService.getAllPedido();
             return Ok(Pedido);
         }
+
+
+        [HttpGet("{idPed}/produtosPedidos")]
+        public ActionResult<List<ProdutoPedido>> GetAllProdutoPedByPedido(int idPed)
+        {
+            List<ProdutoPedido> ProdutoPedido =  _ProdutoPedidoService.GetProdutosPedidosPorPedidoId(idPed);
+            return Ok(ProdutoPedido);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> AddPedido(Pedido Pedido)
