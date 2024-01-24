@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("Dat
 
 builder.Services.AddScoped<PessoaService>();
 builder.Services.AddScoped<ProdutoService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddScoped<PedidoService>();
 builder.Services.AddScoped<ProdutoPedidoService>();
 

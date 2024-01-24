@@ -15,9 +15,9 @@ namespace introApiWeb.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly ProdutoService _ProdutoService;
+        private readonly IProdutoService _ProdutoService;
 
-        public ProdutoController(ProdutoService Produtoervice)
+        public ProdutoController(IProdutoService Produtoervice)
         {
             _ProdutoService = Produtoervice;
         }
@@ -25,7 +25,7 @@ namespace introApiWeb.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Produto>>> GetAllProduto()
         {
-            List<Produto> Produto = await _ProdutoService.getAllProduto();
+            List<Produto> Produto = await _ProdutoService.GetAllProduto();
             return Ok(Produto);
         }
 

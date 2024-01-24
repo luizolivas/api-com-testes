@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
 {
-    public class ProdutoService
+    public class ProdutoService : IProdutoService
     {
         private readonly AppDBContext _context;
 
@@ -13,7 +13,7 @@ namespace introApiWeb.Services
             _context = context;
         }
 
-        public async Task<List<Produto>> getAllProduto()
+        public async Task<List<Produto>> GetAllProduto()
         {
             return await _context.Produtos.ToListAsync();
         }
