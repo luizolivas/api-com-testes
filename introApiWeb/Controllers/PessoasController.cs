@@ -34,12 +34,20 @@ namespace introApiWeb.Controllers
         {
             try
             {
-                await _pessoaService.FindPessoaById(id);
-                return Ok();
+                var produto = await _pessoaService.FindPessoaById(id);
+
+                if (produto != null)
+                {
+                    return Ok(produto);
+                }
+                else
+                {
+                    return NotFound(); 
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest($"Falha ao buscar pessoa: {ex.Message}");
+                return BadRequest($"Falha ao buscar produto: {ex.Message}");
             }
         }
 
