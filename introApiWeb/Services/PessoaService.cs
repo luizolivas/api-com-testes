@@ -19,6 +19,19 @@ namespace introApiWeb.Services
             return await _context.Pessoas.ToListAsync();
         }
 
+        public async Task<Pessoa> FindPessoaById(int pessoaId)
+        {
+            try
+            {
+                return await _context.Pessoas.FindAsync(pessoaId);
+            }
+            catch
+            {
+                throw new Exception("Erro ao buscar pessoa por ID.");
+            }
+
+        }
+
         public async Task AddPessoa(Pessoa pessoa)
         {
             try
@@ -76,9 +89,10 @@ namespace introApiWeb.Services
                 await _context.SaveChangesAsync();
             }catch (Exception ex)
             {
+                throw new Exception("Erro ao atualizar pessoa"); // ou outra exceção personalizada
 
             }
-            
+
 
         }
 

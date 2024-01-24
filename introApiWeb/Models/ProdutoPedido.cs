@@ -9,11 +9,11 @@ namespace introApiWeb.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ProdutoId { get; set; }
-        public Produto Produto { get; set; }
+        public Produto? Produto { get; set; }
 
-        // Outras propriedades específicas do ProdutoPedido (quantidade, preço, etc.)
+        
 
         public int PedidoId { get; set; }
-        public Pedido Pedido { get; set; }
+        public Pedido? Pedido { get; set; }
     }
 }

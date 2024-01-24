@@ -18,6 +18,21 @@ namespace introApiWeb.Services
             return await _context.Produtos.ToListAsync();
         }
 
+        public async Task<Produto> FindProdutoById(int produtoId)
+        {
+            try
+            {
+
+                Produto p = await _context.Produtos.FindAsync(produtoId);
+                return p;
+            }
+            catch
+            {
+                throw new Exception("Erro ao buscar Produto por ID.");
+            }
+
+        }
+
         public async Task AddProduto(Produto Produto)
         {
             _context.Produtos.Add(Produto);

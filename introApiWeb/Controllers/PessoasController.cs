@@ -29,6 +29,28 @@ namespace introApiWeb.Controllers
             return Ok(pessoas);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> FindPessoaById(int id)
+        {
+            try
+            {
+                var produto = await _pessoaService.FindPessoaById(id);
+
+                if (produto != null)
+                {
+                    return Ok(produto);
+                }
+                else
+                {
+                    return NotFound(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Falha ao buscar produto: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddPessoa(Pessoa pessoa)
         {
@@ -73,5 +95,7 @@ namespace introApiWeb.Controllers
                 return BadRequest($"Falha ao atualizar pessoa: {ex.Message}");
             }
         }
+
+
     }
 }

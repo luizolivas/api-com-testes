@@ -18,24 +18,34 @@ namespace introApiWeb.Services
             return await _context.ProdutoPedidos.ToListAsync();
         }
 
-        public async Task AddProdutoPedido(ProdutoPedido pessoa)
+        public async Task AddProdutoPedido(ProdutoPedido produtoPed)
         {
-            try
+            // Certifique-se de que os IDs são válidos
+            Produto? produto = await _context.Produtos.FindAsync(produtoPed.ProdutoId);
+            Pedido? pedido = await _context.Pedidos.FindAsync(produtoPed.PedidoId);
+
+            if (produto != null && pedido != null)
             {
-                _context.ProdutoPedidos.Add(pessoa);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    produtoPed.Produto = produto;
+                    produtoPed.Pedido = pedido;
+
+                    _context.ProdutoPedidos.Add(produtoPed);
+                    await _context.SaveChangesAsync();
+                }
+                catch { }
 
             }
-            catch (Exception ex)
+            else
             {
-
+                throw new Exception("Produto ou Pedido não encontrado");
             }
-
         }
 
-        public async Task DeleteProdutoPedido(int pessoaId)
+        public async Task DeleteProdutoPedido(int produtoPedId)
         {
-            var p = _context.ProdutoPedidos.Find(pessoaId);
+            var p = _context.ProdutoPedidos.Find(produtoPedId);
 
             if (p is null)
             {
@@ -54,7 +64,7 @@ namespace introApiWeb.Services
             }
             ProdutoPedido? pp = await _context.ProdutoPedidos.FindAsync(p.Id);
 
-            //if (pessoa == null)
+            //if (produtoPed == null)
             //{
             //    return;
             //}
@@ -63,7 +73,7 @@ namespace introApiWeb.Services
 
             try
             {
-                //_context.ProdutoPedidos.Update(pessoa);
+                //_context.ProdutoPedidos.Update(produtoPed);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -74,5 +84,19 @@ namespace introApiWeb.Services
 
         }
 
+        public List<ProdutoPedido> GetProdutosPedidosPorPedidoId(int pedidoId)
+        {
+            var produtosPedidos = _context.Pedidos
+                .Where(p => p.Id == pedidoId)
+                .Include(p => p.ProdutosPedidos)
+                    .ThenInclude(pp => pp.Produto)
+                .SelectMany(p => p.ProdutosPedidos)
+                .ToList();
+
+            return produtosPedidos;
+        }
+
     }
+
+
 }
