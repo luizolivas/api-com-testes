@@ -38,6 +38,8 @@ namespace introApiWeb.Controllers
             try
             {
                 await _ProdutoPedidoService.AddProdutoPedido(ProdutoPedido);
+                _RabbitMQProducer.SendProductMessage(ProdutoPedido, "ProdutoPedido");
+
                 return Ok();
 
             }
@@ -72,6 +74,7 @@ namespace introApiWeb.Controllers
             try
             {
                 await _ProdutoPedidoService.UpdateProdutoPedido(newProdutoPedido);
+                _RabbitMQProducer.SendProductMessage(newProdutoPedido, "ProdutoPedido");
                 return Ok();
             }
             catch (Exception ex)

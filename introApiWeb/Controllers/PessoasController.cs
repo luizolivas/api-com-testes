@@ -61,6 +61,7 @@ namespace introApiWeb.Controllers
             try
             {
                 await _pessoaService.AddPessoa(pessoa);
+                _rabitMQProducer.SendProductMessage(pessoa, "Pessoa");
                 return Ok();
 
             }catch (Exception ex)
@@ -93,6 +94,7 @@ namespace introApiWeb.Controllers
             try
             {
                 await _pessoaService.UpdatePessoa(newPessoa);
+                _rabitMQProducer.SendProductMessage(newPessoa, "Pessoa");
                 return Ok();
             }catch (Exception ex)
             {

@@ -51,6 +51,7 @@ namespace introApiWeb.Controllers
             try
             {
                 await _PedidoService.AddPedido(Pedido);
+                _RabitMQProducer.SendProductMessage(Pedido, "Produto");
                 return Ok();
 
             }
@@ -69,6 +70,7 @@ namespace introApiWeb.Controllers
             try
             {
                 await _PedidoService.DeletePedido(id);
+
                 return Ok();
 
             }
