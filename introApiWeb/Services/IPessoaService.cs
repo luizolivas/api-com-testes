@@ -4,7 +4,7 @@ namespace introApiWeb.Services
 {
     public interface IPessoaService
     {
-        Task<List<Pessoa>> getAllPessoa();
+        Task<List<Pessoa>> GetAllPessoa();
         Task<Pessoa> FindPessoaById(int pessoaId);
         Task AddPessoa(Pessoa pessoa);
         Task DeletePessoa(int pessoaId);

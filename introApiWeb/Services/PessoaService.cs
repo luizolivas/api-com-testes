@@ -14,7 +14,7 @@ namespace introApiWeb.Services
             _context = context;
         }
 
-        public async Task<List<Pessoa>> getAllPessoa()
+        public async Task<List<Pessoa>> GetAllPessoa()
         {
             return await _context.Pessoas.ToListAsync();
         }
@@ -81,15 +81,25 @@ namespace introApiWeb.Services
             }
 
             pessoa.Nome = p.Nome;
-            pessoa.Tel = p.Tel;
 
-            try
+            
+
+            if (ValidaNumTel.verificaNum(p.Tel))
             {
+                pessoa.Tel = p.Tel;
+            }
+            else
+            {
+                throw new Exception("Número de telefone inválido");
+            }
+
+            try { 
+
                 _context.Pessoas.Update(pessoa);
                 await _context.SaveChangesAsync();
             }catch (Exception ex)
             {
-                throw new Exception("Erro ao atualizar pessoa"); // ou outra exceção personalizada
+                throw new Exception("Erro ao atualizar pessoa");
 
             }
 

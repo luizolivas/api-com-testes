@@ -28,7 +28,7 @@ namespace introApiWeb.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Pessoa>>> GetAllPessoas()
         {
-            List<Pessoa> pessoas = await _pessoaService.getAllPessoa();
+            List<Pessoa> pessoas = await _pessoaService.GetAllPessoa();
             _rabitMQProducer.SendProductMessage(pessoas, "Pessoa");
             return Ok(pessoas);
         }

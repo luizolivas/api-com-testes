@@ -13,7 +13,7 @@ namespace introApiWeb.Application.Tests.Services
 {
     public class PessoaServiceTests
     {
-        private PessoaService pessoaService;
+        private IPessoaService pessoaService;
         private AppDBContext dbContext;
 
         public PessoaServiceTests()
@@ -28,6 +28,68 @@ namespace introApiWeb.Application.Tests.Services
             
             pessoaService = new PessoaService(dbContext);
 
+        }
+
+        [Fact]
+        public async Task GetAllPessoa_DeveBuscarAllPessoas()
+        {
+            var pessoas = new List<Pessoa>
+            {
+                new Pessoa { Id = 1, Nome = "João", Tel = "(43) 0000-1111" },
+                new Pessoa { Id = 2, Nome = "Maria", Tel = "(43) 0000-2222" },
+            };
+
+
+            foreach (var pessoa in pessoas)
+            {
+                await pessoaService.AddPessoa(pessoa);
+            }
+
+            var resultado = await pessoaService.GetAllPessoa();
+
+            Assert.NotNull(resultado);
+            Assert.Equal(pessoas.Count, resultado.Count);
+
+            for(int i = 0; i < pessoas.Count; i++)
+            {
+                Assert.Equal(pessoas[i].Id, resultado[i].Id);
+                Assert.Equal(pessoas[i].Nome, resultado[i].Nome);
+                Assert.Equal(pessoas[i].Tel, resultado[i].Tel);
+            }
+
+            dbContext.Database.EnsureDeleted();
+        }
+
+        [Fact]
+        public async Task FindPessoaById_DeveBuscarPessoaPorID()
+        {
+            var p1 = new Pessoa
+            {
+                Nome = "Test Pessoa1",
+                Tel = "(43) 0000-1111"
+            };
+            await pessoaService.AddPessoa(p1);
+
+            var p2 = new Pessoa
+            {
+                Nome = "Test Pessoa2",
+                Tel = "(43) 0000-2222"
+            };
+            await pessoaService.AddPessoa(p2);
+
+            var p3 = new Pessoa
+            {
+                Nome = "Test Pessoa3",
+                Tel = "(43) 0000-3333"
+            };
+            await pessoaService.AddPessoa(p3);
+
+            Pessoa? pessoaEncontrada = await pessoaService.FindPessoaById(3);
+            Assert.NotNull(pessoaEncontrada);
+            Assert.Equal("Test Pessoa3", pessoaEncontrada.Nome);
+            Assert.Equal("(43) 0000-3333", pessoaEncontrada.Tel);
+
+            dbContext.Database.EnsureDeleted();
         }
 
         [Fact]
@@ -88,6 +150,8 @@ namespace introApiWeb.Application.Tests.Services
 
             var pessoaDeleteada = await dbContext.Pessoas.FirstOrDefaultAsync();
             Assert.Null(pessoaDeleteada);
+
+            dbContext.Database.EnsureDeleted();
         }
 
     }
