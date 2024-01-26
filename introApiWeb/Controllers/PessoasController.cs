@@ -16,10 +16,10 @@ namespace introApiWeb.Controllers
     [ApiController]
     public class PessoasController : ControllerBase
     {
-        private readonly PessoaService _pessoaService;
+        private readonly IPessoaService _pessoaService;
         private readonly IRabitMQProducer _rabitMQProducer;
 
-        public PessoasController(PessoaService pessoaService, IRabitMQProducer rabitMQProducer)
+        public PessoasController(IPessoaService pessoaService, IRabitMQProducer rabitMQProducer)
         {
             _pessoaService = pessoaService;
             _rabitMQProducer = rabitMQProducer;

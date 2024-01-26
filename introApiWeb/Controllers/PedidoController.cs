@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using introApiWeb.Contexts;
 using introApiWeb.Models;
 using introApiWeb.Services;
+using introApiWeb.RabbitMQ;
 
 namespace introApiWeb.Controllers
 {
@@ -15,14 +16,15 @@ namespace introApiWeb.Controllers
     [ApiController]
     public class PedidoController : ControllerBase
     {
-        private readonly PedidoService _PedidoService;
+        private readonly IPedidoService _PedidoService;
+        private readonly IProdutoPedidoService _ProdutoPedidoService;
+        private readonly IRabitMQProducer _RabitMQProducer;
 
-        private readonly ProdutoPedidoService _ProdutoPedidoService;
-
-        public PedidoController(PedidoService Pedidoervice, ProdutoPedidoService produtoPedidoService)
+        public PedidoController(IPedidoService Pedidoervice, IProdutoPedidoService produtoPedidoService, IRabitMQProducer rabitMQProducer)
         {
             _PedidoService = Pedidoervice;
             _ProdutoPedidoService = produtoPedidoService;
+            _RabitMQProducer = rabitMQProducer;
         }
 
 

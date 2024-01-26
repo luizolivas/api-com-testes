@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
 {
-    public class PessoaService
+    public class PessoaService : IPessoaService
     {
         private readonly AppDBContext _context;
 

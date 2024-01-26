@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace introApiWeb.Services
 {
-    public class ProdutoPedidoService
+    public class ProdutoPedidoService : IProdutoPedidoService
     {
         private readonly AppDBContext _context;
 

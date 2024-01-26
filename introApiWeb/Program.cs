@@ -17,11 +17,15 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("Dat
 
 
 builder.Services.AddScoped<PessoaService>();
+builder.Services.AddScoped<IPessoaService>();
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
-builder.Services.AddScoped<IRabitMQProducer, RabitMQProducer>();
 builder.Services.AddScoped<PedidoService>();
+builder.Services.AddScoped<IPedidoService>();
 builder.Services.AddScoped<ProdutoPedidoService>();
+builder.Services.AddScoped<IProdutoPedidoService>();
+
+builder.Services.AddScoped<IRabitMQProducer, RabitMQProducer>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
