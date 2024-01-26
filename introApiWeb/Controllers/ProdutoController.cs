@@ -45,18 +45,12 @@ namespace introApiWeb.Controllers
 
                 if (produto != null)
                 {
-                    if (produto.Id == 2)
-                    {
-                        throw new Exception("Erro intencional para testar a mensagem morta.");
-                    }
-
                     _rabitMQProducer.SendProductMessage(produto);
-                    //_rabitMQProducer.SendProductMessage(produto);
                     return Ok(produto);
                 }
                 else
                 {
-                    return NotFound(); // Produto não encontrado
+                    return NotFound(); 
                 }
             }
             catch (Exception ex)

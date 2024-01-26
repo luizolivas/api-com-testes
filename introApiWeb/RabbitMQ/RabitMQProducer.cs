@@ -36,14 +36,13 @@ namespace introApiWeb.RabbitMQ
             channel.ExchangeDeclare("product-dead-letter-exchange", ExchangeType.Fanout, durable: true);
 
             // Vincule a fila de mensagens mortas à troca de mensagens mortas
-            channel.QueueBind("product-dead-letter", "product-dead-letter-exchange", routingKey: "");
+            channel.QueueBind("product-dead-letter", "product-dead-letter-exchange", routingKey: "product-dead");
 
 
             // Configuração da fila principal com suporte a mensagens mortas
             var args = new Dictionary<string, object>
             {
                 {"x-dead-letter-exchange", "product-dead-letter-exchange"},
-                {"x-dead-letter-routing-key", ""}
             };
 
 

@@ -27,7 +27,23 @@ consumer.Received += (model, eventArgs) =>
 {
     var body = eventArgs.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
-    Console.WriteLine("Product message received: " + message);
+
+    // Verifica a fila de origem da mensagem
+    var queue = eventArgs.RoutingKey;
+
+    if (queue == "product")
+    {
+        Console.WriteLine("Product message received from main queue: " + message);
+    }
+    else if (queue == "product-dead")
+    {
+        Console.WriteLine("Product message received from dead letter queue: " + message);
+        // Lógica adicional para mensagens da fila de mensagens mortas
+    }
+    else
+    {
+        Console.WriteLine("Unknown message received from an unknown queue: " + message);
+    }
 };
 
 // Consuma mensagens tanto da fila principal quanto da fila de mensagens mortas
