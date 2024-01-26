@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using introApiWeb.Contexts;
 using introApiWeb.Models;
 using introApiWeb.Services;
+using introApiWeb.RabbitMQ;
 
 namespace introApiWeb.Controllers
 {
@@ -16,16 +17,22 @@ namespace introApiWeb.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoService _ProdutoService;
+        private readonly IRabitMQProducer _rabitMQProducer;
 
-        public ProdutoController(IProdutoService Produtoervice)
+        public ProdutoController(IProdutoService Produtoervice, IRabitMQProducer rabitMQProducer)
         {
             _ProdutoService = Produtoervice;
+            _rabitMQProducer = rabitMQProducer;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Produto>>> GetAllProduto()
         {
             List<Produto> Produto = await _ProdutoService.GetAllProduto();
+
+            // envia os dados dos produtos inseridos para a fila e o consumidor estará ouvindo esses dados na fila
+            _rabitMQProducer.SendProductMessage(Produto);
+
             return Ok(Produto);
         }
 
@@ -38,6 +45,13 @@ namespace introApiWeb.Controllers
 
                 if (produto != null)
                 {
+                    if (produto.Id == 2)
+                    {
+                        throw new Exception("Erro intencional para testar a mensagem morta.");
+                    }
+
+                    _rabitMQProducer.SendProductMessage(produto);
+                    //_rabitMQProducer.SendProductMessage(produto);
                     return Ok(produto);
                 }
                 else

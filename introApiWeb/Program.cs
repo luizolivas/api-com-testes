@@ -3,6 +3,7 @@ using introApiWeb.Models;
 using introApiWeb.Contexts;
 using introApiWeb.Services;
 using System.Configuration;
+using introApiWeb.RabbitMQ;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer("Dat
 builder.Services.AddScoped<PessoaService>();
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IRabitMQProducer, RabitMQProducer>();
 builder.Services.AddScoped<PedidoService>();
 builder.Services.AddScoped<ProdutoPedidoService>();
 
