@@ -10,17 +10,6 @@ var factory = new ConnectionFactory
 using var connection = factory.CreateConnection();
 using var channel = connection.CreateModel();
 
-// Declare a fila principal
-channel.QueueDeclare("product", durable: true, exclusive: false, autoDelete: false);
-
-// Declare a fila de mensagens mortas
-channel.QueueDeclare("product-dead-letter", durable: true, exclusive: false, autoDelete: false);
-
-// Declare a troca de mensagens mortas
-channel.ExchangeDeclare("product-dead-letter-exchange", ExchangeType.Fanout, durable: true);
-
-// Vincule a fila de mensagens mortas à troca de mensagens mortas
-channel.QueueBind("product-dead-letter", "product-dead-letter-exchange", routingKey: "");
 
 var consumer = new EventingBasicConsumer(channel);
 consumer.Received += (model, eventArgs) =>
@@ -31,18 +20,14 @@ consumer.Received += (model, eventArgs) =>
     // Verifica a fila de origem da mensagem
     var queue = eventArgs.RoutingKey;
 
-    if (queue == "product")
+    if (queue.Contains("dead"))
     {
-        Console.WriteLine("Product message received from main queue: " + message);
-    }
-    else if (queue == "product-dead")
-    {
-        Console.WriteLine("Product message received from dead letter queue: " + message);
+        Console.WriteLine("Message received from dead letter queue: " + message);
         // Lógica adicional para mensagens da fila de mensagens mortas
     }
     else
     {
-        Console.WriteLine("Unknown message received from an unknown queue: " + message);
+        Console.WriteLine("Message received from main queue: " + message);
     }
 };
 

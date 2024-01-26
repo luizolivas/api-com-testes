@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using introApiWeb.Contexts;
 using introApiWeb.Models;
 using introApiWeb.Services;
+using introApiWeb.RabbitMQ;
 
 namespace introApiWeb.Controllers
 {
@@ -16,16 +17,19 @@ namespace introApiWeb.Controllers
     public class PessoasController : ControllerBase
     {
         private readonly PessoaService _pessoaService;
+        private readonly IRabitMQProducer _rabitMQProducer;
 
-        public PessoasController(PessoaService pessoaService)
+        public PessoasController(PessoaService pessoaService, IRabitMQProducer rabitMQProducer)
         {
             _pessoaService = pessoaService;
+            _rabitMQProducer = rabitMQProducer;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Pessoa>>> GetAllPessoas()
         {
             List<Pessoa> pessoas = await _pessoaService.getAllPessoa();
+            _rabitMQProducer.SendProductMessage(pessoas, "Pessoa");
             return Ok(pessoas);
         }
 

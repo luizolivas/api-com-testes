@@ -31,7 +31,7 @@ namespace introApiWeb.Controllers
             List<Produto> Produto = await _ProdutoService.GetAllProduto();
 
             // envia os dados dos produtos inseridos para a fila e o consumidor estará ouvindo esses dados na fila
-            _rabitMQProducer.SendProductMessage(Produto);
+            _rabitMQProducer.SendProductMessage(Produto, "Produto");
 
             return Ok(Produto);
         }
@@ -45,7 +45,7 @@ namespace introApiWeb.Controllers
 
                 if (produto != null)
                 {
-                    _rabitMQProducer.SendProductMessage(produto);
+                    _rabitMQProducer.SendProductMessage(produto, "Produto");
                     return Ok(produto);
                 }
                 else
